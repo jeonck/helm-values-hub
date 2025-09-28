@@ -512,6 +512,157 @@ export const helmCharts = [
         description: 'Number of ZooKeeper replicas'
       }
     }
+  },
+  {
+    id: 'opensearch',
+    name: 'OpenSearch',
+    category: 'Search & Analytics',
+    description: 'A community-driven, open source search and analytics suite derived from Elasticsearch',
+    repository: 'https://opensearch-project.github.io/helm-charts/',
+    chart: 'opensearch/opensearch',
+    latestVersion: '2.18.0',
+    coreValues: {
+      'clusterName': {
+        type: 'string',
+        default: 'opensearch-cluster',
+        description: 'OpenSearch cluster name'
+      },
+      'nodeGroup': {
+        type: 'string',
+        default: 'master',
+        description: 'Node group name for the pods'
+      },
+      'masterService': {
+        type: 'string',
+        default: 'opensearch-cluster-master',
+        description: 'Name of the master service'
+      },
+      'roles': {
+        type: 'array',
+        default: ['master', 'ingest', 'data', 'remote_cluster_client'],
+        description: 'OpenSearch roles for this node group'
+      },
+      'replicas': {
+        type: 'number',
+        default: 3,
+        description: 'Number of OpenSearch master/data replicas'
+      },
+      'minimumMasterNodes': {
+        type: 'number',
+        default: 2,
+        description: 'Minimum master nodes (should be (replicas/2) + 1)'
+      },
+      'opensearchJavaOpts': {
+        type: 'string',
+        default: '-Xmx512M -Xms512M',
+        description: 'Java options for OpenSearch'
+      },
+      'resources.requests.cpu': {
+        type: 'string',
+        default: '1000m',
+        description: 'CPU request'
+      },
+      'resources.requests.memory': {
+        type: 'string',
+        default: '100Mi',
+        description: 'Memory request'
+      },
+      'resources.limits.cpu': {
+        type: 'string',
+        default: '1000m',
+        description: 'CPU limit'
+      },
+      'resources.limits.memory': {
+        type: 'string',
+        default: '512Mi',
+        description: 'Memory limit'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage'
+      },
+      'persistence.size': {
+        type: 'string',
+        default: '8Gi',
+        description: 'Storage size for persistent volumes'
+      },
+      'persistence.storageClass': {
+        type: 'string',
+        default: '',
+        description: 'Storage class for persistent volumes'
+      },
+      'config.opensearch.yml': {
+        type: 'object',
+        default: {
+          'cluster.name': 'opensearch-cluster',
+          'network.host': '0.0.0.0',
+          'plugins.security.ssl.transport.pemcert_filepath': 'esnode.pem',
+          'plugins.security.ssl.transport.pemkey_filepath': 'esnode-key.pem',
+          'plugins.security.ssl.transport.pemtrustedcas_filepath': 'root-ca.pem',
+          'plugins.security.ssl.transport.enforce_hostname_verification': false,
+          'plugins.security.ssl.http.enabled': true,
+          'plugins.security.ssl.http.pemcert_filepath': 'esnode.pem',
+          'plugins.security.ssl.http.pemkey_filepath': 'esnode-key.pem',
+          'plugins.security.ssl.http.pemtrustedcas_filepath': 'root-ca.pem',
+          'plugins.security.allow_unsafe_democertificates': true,
+          'plugins.security.allow_default_init_securityindex': true,
+          'plugins.security.authcz.admin_dn': ['CN=kirk,OU=client,O=client,L=test,C=de'],
+          'plugins.security.audit.type': 'internal_opensearch',
+          'plugins.security.enable_snapshot_restore_privilege': true,
+          'plugins.security.check_snapshot_restore_write_privileges': true,
+          'plugins.security.restapi.roles_enabled': ['all_access', 'security_rest_api_access'],
+          'plugins.security.system_indices.enabled': true,
+          'plugins.security.system_indices.indices': ['.opendistro-alerting-config', '.opendistro-alerting-alert*', '.opendistro-anomaly-results*', '.opendistro-anomaly-detector*', '.opendistro-anomaly-checkpoints', '.opendistro-anomaly-detection-state', '.opendistro-reports-*', '.opendistro-notifications-*', '.opendistro-notebooks', '.opensearch-observability', '.opendistro-asynchronous-search-response*', '.replication-metadata-store']
+        },
+        description: 'OpenSearch configuration'
+      },
+      'securityConfig.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable security plugin configuration'
+      },
+      'securityConfig.path': {
+        type: 'string',
+        default: '/usr/share/opensearch/config/opensearch-security',
+        description: 'Path to security configuration'
+      },
+      'securityConfig.actionGroupsSecret': {
+        type: 'string',
+        default: '',
+        description: 'Secret containing action groups configuration'
+      },
+      'securityConfig.configSecret': {
+        type: 'string',
+        default: '',
+        description: 'Secret containing security configuration'
+      },
+      'securityConfig.internalUsersSecret': {
+        type: 'string',
+        default: '',
+        description: 'Secret containing internal users configuration'
+      },
+      'securityConfig.rolesSecret': {
+        type: 'string',
+        default: '',
+        description: 'Secret containing roles configuration'
+      },
+      'securityConfig.rolesMappingSecret': {
+        type: 'string',
+        default: '',
+        description: 'Secret containing roles mapping configuration'
+      },
+      'networkPolicy.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable NetworkPolicy'
+      },
+      'podSecurityPolicy.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable Pod Security Policy'
+      }
+    }
   }
 ];
 
