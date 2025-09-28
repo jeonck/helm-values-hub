@@ -441,6 +441,77 @@ export const helmCharts = [
         description: 'Database type'
       }
     }
+  },
+  {
+    id: 'pinot',
+    name: 'Apache Pinot',
+    category: 'Real-time Analytics',
+    description: 'A realtime distributed OLAP datastore for analytics at scale',
+    repository: 'https://raw.githubusercontent.com/apache/pinot/master/kubernetes/helm',
+    chart: 'pinot/pinot',
+    latestVersion: '0.12.0',
+    coreValues: {
+      'cluster.name': {
+        type: 'string',
+        default: 'pinot',
+        description: 'Pinot cluster name'
+      },
+      'controller.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of controller replicas'
+      },
+      'controller.persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistence for controller'
+      },
+      'controller.persistence.size': {
+        type: 'string',
+        default: '1Gi',
+        description: 'Controller persistent volume size'
+      },
+      'broker.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of broker replicas'
+      },
+      'server.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of server replicas'
+      },
+      'server.persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistence for server'
+      },
+      'server.persistence.size': {
+        type: 'string',
+        default: '4Gi',
+        description: 'Server persistent volume size'
+      },
+      'minion.persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistence for minion'
+      },
+      'minion.persistence.size': {
+        type: 'string',
+        default: '4Gi',
+        description: 'Minion persistent volume size'
+      },
+      'zookeeper.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable ZooKeeper subchart'
+      },
+      'zookeeper.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of ZooKeeper replicas'
+      }
+    }
   }
 ];
 
@@ -454,5 +525,6 @@ export const categories = [
   'Database',
   'Cache',
   'Data Processing',
-  'Analytics'
+  'Analytics',
+  'Real-time Analytics'
 ];

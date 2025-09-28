@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Search, Filter, ExternalLink, Copy, Check, Settings, Database, BarChart3, Workflow, MessageSquare, Eye, Activity, Server, Zap, BookOpen } from 'lucide-react'
+import { Search, Filter, ExternalLink, Copy, Check, Settings, Database, BarChart3, Workflow, MessageSquare, Eye, Activity, Server, Zap, BookOpen, TrendingUp } from 'lucide-react'
 import { helmCharts, categories } from './data/helmCharts'
 
 const categoryIcons = {
@@ -11,7 +11,8 @@ const categoryIcons = {
   'Database': Database,
   'Cache': Zap,
   'Data Processing': BarChart3,
-  'Analytics': BookOpen
+  'Analytics': BookOpen,
+  'Real-time Analytics': TrendingUp
 }
 
 function App() {
