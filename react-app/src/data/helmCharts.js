@@ -520,7 +520,7 @@ export const helmCharts = [
     description: 'A community-driven, open source search and analytics suite derived from Elasticsearch',
     repository: 'https://opensearch-project.github.io/helm-charts/',
     chart: 'opensearch/opensearch',
-    latestVersion: '2.18.0',
+    latestVersion: '3.2.1',
     coreValues: {
       'clusterName': {
         type: 'string',
@@ -532,11 +532,6 @@ export const helmCharts = [
         default: 'master',
         description: 'Node group name for the pods'
       },
-      'masterService': {
-        type: 'string',
-        default: 'opensearch-cluster-master',
-        description: 'Name of the master service'
-      },
       'roles': {
         type: 'array',
         default: ['master', 'ingest', 'data', 'remote_cluster_client'],
@@ -545,7 +540,7 @@ export const helmCharts = [
       'replicas': {
         type: 'number',
         default: 3,
-        description: 'Number of OpenSearch master/data replicas'
+        description: 'Number of OpenSearch replicas'
       },
       'minimumMasterNodes': {
         type: 'number',
@@ -555,112 +550,120 @@ export const helmCharts = [
       'opensearchJavaOpts': {
         type: 'string',
         default: '-Xmx512M -Xms512M',
-        description: 'Java options for OpenSearch'
+        description: 'Java options for OpenSearch JVM'
       },
       'resources.requests.cpu': {
         type: 'string',
         default: '1000m',
-        description: 'CPU request'
+        description: 'CPU request per pod'
       },
       'resources.requests.memory': {
         type: 'string',
         default: '100Mi',
-        description: 'Memory request'
+        description: 'Memory request per pod'
       },
       'resources.limits.cpu': {
         type: 'string',
         default: '1000m',
-        description: 'CPU limit'
+        description: 'CPU limit per pod'
       },
       'resources.limits.memory': {
         type: 'string',
         default: '512Mi',
-        description: 'Memory limit'
+        description: 'Memory limit per pod'
       },
       'persistence.enabled': {
         type: 'boolean',
         default: true,
-        description: 'Enable persistent storage'
+        description: 'Enable persistent storage for data'
       },
       'persistence.size': {
         type: 'string',
         default: '8Gi',
-        description: 'Storage size for persistent volumes'
+        description: 'Size of persistent volume'
       },
-      'persistence.storageClass': {
+      'persistence.accessModes': {
+        type: 'array',
+        default: ['ReadWriteOnce'],
+        description: 'Access modes for persistent volume'
+      },
+      'protocol': {
         type: 'string',
-        default: '',
-        description: 'Storage class for persistent volumes'
+        default: 'https',
+        options: ['http', 'https'],
+        description: 'Protocol for OpenSearch API'
+      },
+      'httpPort': {
+        type: 'number',
+        default: 9200,
+        description: 'HTTP port for OpenSearch API'
+      },
+      'transportPort': {
+        type: 'number',
+        default: 9300,
+        description: 'Transport port for cluster communication'
       },
       'config.opensearch.yml': {
-        type: 'object',
-        default: {
-          'cluster.name': 'opensearch-cluster',
-          'network.host': '0.0.0.0',
-          'plugins.security.ssl.transport.pemcert_filepath': 'esnode.pem',
-          'plugins.security.ssl.transport.pemkey_filepath': 'esnode-key.pem',
-          'plugins.security.ssl.transport.pemtrustedcas_filepath': 'root-ca.pem',
-          'plugins.security.ssl.transport.enforce_hostname_verification': false,
-          'plugins.security.ssl.http.enabled': true,
-          'plugins.security.ssl.http.pemcert_filepath': 'esnode.pem',
-          'plugins.security.ssl.http.pemkey_filepath': 'esnode-key.pem',
-          'plugins.security.ssl.http.pemtrustedcas_filepath': 'root-ca.pem',
-          'plugins.security.allow_unsafe_democertificates': true,
-          'plugins.security.allow_default_init_securityindex': true,
-          'plugins.security.authcz.admin_dn': ['CN=kirk,OU=client,O=client,L=test,C=de'],
-          'plugins.security.audit.type': 'internal_opensearch',
-          'plugins.security.enable_snapshot_restore_privilege': true,
-          'plugins.security.check_snapshot_restore_write_privileges': true,
-          'plugins.security.restapi.roles_enabled': ['all_access', 'security_rest_api_access'],
-          'plugins.security.system_indices.enabled': true,
-          'plugins.security.system_indices.indices': ['.opendistro-alerting-config', '.opendistro-alerting-alert*', '.opendistro-anomaly-results*', '.opendistro-anomaly-detector*', '.opendistro-anomaly-checkpoints', '.opendistro-anomaly-detection-state', '.opendistro-reports-*', '.opendistro-notifications-*', '.opendistro-notebooks', '.opensearch-observability', '.opendistro-asynchronous-search-response*', '.replication-metadata-store']
-        },
-        description: 'OpenSearch configuration'
+        type: 'string',
+        default: 'cluster.name: opensearch-cluster\nnetwork.host: 0.0.0.0',
+        description: 'OpenSearch configuration in YAML format'
       },
       'securityConfig.enabled': {
         type: 'boolean',
         default: true,
-        description: 'Enable security plugin configuration'
+        description: 'Enable OpenSearch Security plugin'
       },
       'securityConfig.path': {
         type: 'string',
         default: '/usr/share/opensearch/config/opensearch-security',
-        description: 'Path to security configuration'
+        description: 'Path to security configuration directory'
       },
-      'securityConfig.actionGroupsSecret': {
+      'securityConfig.config.securityConfigSecret': {
         type: 'string',
         default: '',
-        description: 'Secret containing action groups configuration'
+        description: 'Secret containing security configuration files'
       },
-      'securityConfig.configSecret': {
+      'service.type': {
         type: 'string',
-        default: '',
-        description: 'Secret containing security configuration'
+        default: 'ClusterIP',
+        options: ['ClusterIP', 'NodePort', 'LoadBalancer'],
+        description: 'Kubernetes service type'
       },
-      'securityConfig.internalUsersSecret': {
-        type: 'string',
-        default: '',
-        description: 'Secret containing internal users configuration'
-      },
-      'securityConfig.rolesSecret': {
-        type: 'string',
-        default: '',
-        description: 'Secret containing roles configuration'
-      },
-      'securityConfig.rolesMappingSecret': {
-        type: 'string',
-        default: '',
-        description: 'Secret containing roles mapping configuration'
+      'ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for external access'
       },
       'networkPolicy.enabled': {
         type: 'boolean',
         default: false,
-        description: 'Enable NetworkPolicy'
+        description: 'Enable Kubernetes NetworkPolicy'
       },
-      'podSecurityPolicy.enabled': {
+      'podSecurityContext.fsGroup': {
+        type: 'number',
+        default: 1000,
+        description: 'File system group for pod security context'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create a service account for the deployment'
+      },
+      'rbac.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create RBAC resources'
+      },
+      'plugins.enabled': {
         type: 'boolean',
         default: false,
-        description: 'Enable Pod Security Policy'
+        description: 'Enable additional OpenSearch plugins'
+      },
+      'antiAffinity': {
+        type: 'string',
+        default: 'soft',
+        options: ['hard', 'soft'],
+        description: 'Pod anti-affinity rule (hard/soft)'
       }
     }
   }
