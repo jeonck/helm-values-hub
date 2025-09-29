@@ -449,7 +449,7 @@ export const helmCharts = [
     description: 'A realtime distributed OLAP datastore for analytics at scale',
     repository: 'https://raw.githubusercontent.com/apache/pinot/master/helm',
     chart: 'pinot/pinot',
-    latestVersion: '0.12.0',
+    latestVersion: '0.3.4',
     coreValues: {
       'cluster.name': {
         type: 'string',
