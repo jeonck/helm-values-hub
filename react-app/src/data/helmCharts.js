@@ -666,6 +666,543 @@ export const helmCharts = [
         description: 'Pod anti-affinity rule (hard/soft)'
       }
     }
+  },
+  {
+    id: 'nexus',
+    name: 'Nexus Repository',
+    category: 'Artifact Repository',
+    description: 'A universal artifact repository manager for DevOps environments',
+    repository: 'https://sonatypecommunity.github.io/helm3-charts/',
+    chart: 'sonatype/nexus-repository-manager',
+    latestVersion: '66.0.0',
+    coreValues: {
+      'replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of Nexus replicas'
+      },
+      'deploymentStrategy': {
+        type: 'string',
+        default: 'Recreate',
+        options: ['Recreate', 'RollingUpdate'],
+        description: 'Deployment strategy for updates'
+      },
+      'nexus.resources.requests.cpu': {
+        type: 'string',
+        default: '4',
+        description: 'CPU request for Nexus container'
+      },
+      'nexus.resources.requests.memory': {
+        type: 'string',
+        default: '8Gi',
+        description: 'Memory request for Nexus container'
+      },
+      'nexus.resources.limits.cpu': {
+        type: 'string',
+        default: '4',
+        description: 'CPU limit for Nexus container'
+      },
+      'nexus.resources.limits.memory': {
+        type: 'string',
+        default: '8Gi',
+        description: 'Memory limit for Nexus container'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage'
+      },
+      'persistence.storageSize': {
+        type: 'string',
+        default: '500Gi',
+        description: 'Size of persistent volume for artifacts'
+      },
+      'persistence.accessMode': {
+        type: 'string',
+        default: 'ReadWriteOnce',
+        description: 'Access mode for persistent volume'
+      },
+      'nexus.env': {
+        type: 'object',
+        default: {
+          'INSTALL4J_ADD_VM_PARAMS': '-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=/nexus-data/javaprefs'
+        },
+        description: 'Environment variables for Nexus'
+      },
+      'service.type': {
+        type: 'string',
+        default: 'ClusterIP',
+        options: ['ClusterIP', 'NodePort', 'LoadBalancer'],
+        description: 'Kubernetes service type'
+      },
+      'service.port': {
+        type: 'number',
+        default: 8081,
+        description: 'Service port for Nexus web interface'
+      },
+      'ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress controller'
+      },
+      'ingress.annotations': {
+        type: 'object',
+        default: {
+          'nginx.ingress.kubernetes.io/proxy-body-size': '0'
+        },
+        description: 'Ingress annotations for large file uploads'
+      },
+      'nexus.docker.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable Docker repository support'
+      },
+      'nexus.docker.registries': {
+        type: 'array',
+        default: [],
+        description: 'Docker registry configurations'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create service account'
+      },
+      'securityContext.fsGroup': {
+        type: 'number',
+        default: 997,
+        description: 'File system group for Nexus user'
+      }
+    }
+  },
+  {
+    id: 'harbor',
+    name: 'Harbor',
+    category: 'Container Registry',
+    description: 'An open source trusted cloud native registry project that stores, signs, and scans content',
+    repository: 'https://helm.goharbor.io',
+    chart: 'harbor/harbor',
+    latestVersion: '1.14.0',
+    coreValues: {
+      'expose.type': {
+        type: 'string',
+        default: 'ingress',
+        options: ['ingress', 'clusterIP', 'nodePort', 'loadBalancer'],
+        description: 'Service exposure method'
+      },
+      'expose.tls.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable TLS for Harbor services'
+      },
+      'expose.ingress.hosts.core': {
+        type: 'string',
+        default: 'core.harbor.domain',
+        description: 'Core service hostname'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage'
+      },
+      'persistence.resourcePolicy': {
+        type: 'string',
+        default: 'keep',
+        options: ['keep', 'delete'],
+        description: 'Resource policy for persistent volumes'
+      },
+      'persistence.persistentVolumeClaim.registry.size': {
+        type: 'string',
+        default: '5Gi',
+        description: 'Registry storage size'
+      },
+      'persistence.persistentVolumeClaim.database.size': {
+        type: 'string',
+        default: '1Gi',
+        description: 'Database storage size'
+      },
+      'persistence.persistentVolumeClaim.redis.size': {
+        type: 'string',
+        default: '1Gi',
+        description: 'Redis storage size'
+      },
+      'harborAdminPassword': {
+        type: 'string',
+        default: 'Harbor12345',
+        description: 'Initial Harbor admin password'
+      },
+      'database.internal.password': {
+        type: 'string',
+        default: 'changeit',
+        description: 'Internal database password'
+      },
+      'core.resources.requests.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Core service memory request'
+      },
+      'core.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'Core service CPU request'
+      },
+      'registry.resources.requests.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Registry service memory request'
+      },
+      'registry.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'Registry service CPU request'
+      },
+      'trivy.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Trivy vulnerability scanner'
+      },
+      'notary.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Notary for image signing'
+      },
+      'chartmuseum.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Chart Museum for Helm charts'
+      }
+    }
+  },
+  {
+    id: 'gitlab',
+    name: 'GitLab',
+    category: 'DevOps Platform',
+    description: 'A complete DevOps platform with Git repository, CI/CD, and project management',
+    repository: 'https://charts.gitlab.io/',
+    chart: 'gitlab/gitlab',
+    latestVersion: '7.7.0',
+    coreValues: {
+      'global.hosts.domain': {
+        type: 'string',
+        default: 'example.com',
+        description: 'Base domain for GitLab services'
+      },
+      'global.hosts.externalIP': {
+        type: 'string',
+        default: '',
+        description: 'External IP for GitLab services'
+      },
+      'global.edition': {
+        type: 'string',
+        default: 'ce',
+        options: ['ce', 'ee'],
+        description: 'GitLab edition (Community/Enterprise)'
+      },
+      'global.initialRootPassword.secret': {
+        type: 'string',
+        default: 'gitlab-initial-root-password',
+        description: 'Secret containing initial root password'
+      },
+      'global.psql.password.secret': {
+        type: 'string',
+        default: 'gitlab-postgres-password',
+        description: 'PostgreSQL password secret'
+      },
+      'global.redis.password.secret': {
+        type: 'string',
+        default: 'gitlab-redis-secret',
+        description: 'Redis password secret'
+      },
+      'postgresql.install': {
+        type: 'boolean',
+        default: true,
+        description: 'Install PostgreSQL as part of GitLab'
+      },
+      'postgresql.resources.requests.memory': {
+        type: 'string',
+        default: '1Gi',
+        description: 'PostgreSQL memory request'
+      },
+      'redis.install': {
+        type: 'boolean',
+        default: true,
+        description: 'Install Redis as part of GitLab'
+      },
+      'gitlab.webservice.resources.requests.memory': {
+        type: 'string',
+        default: '1.25G',
+        description: 'Webservice memory request'
+      },
+      'gitlab.webservice.resources.requests.cpu': {
+        type: 'string',
+        default: '300m',
+        description: 'Webservice CPU request'
+      },
+      'gitlab.sidekiq.resources.requests.memory': {
+        type: 'string',
+        default: '1G',
+        description: 'Sidekiq memory request'
+      },
+      'gitlab.sidekiq.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'Sidekiq CPU request'
+      },
+      'gitlab.gitaly.resources.requests.memory': {
+        type: 'string',
+        default: '1G',
+        description: 'Gitaly memory request'
+      },
+      'gitlab.gitaly.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'Gitaly CPU request'
+      },
+      'gitlab.gitlab-shell.resources.requests.memory': {
+        type: 'string',
+        default: '100M',
+        description: 'GitLab Shell memory request'
+      },
+      'gitlab.gitlab-shell.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'GitLab Shell CPU request'
+      },
+      'nginx-ingress.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable NGINX Ingress Controller'
+      },
+      'certmanager.install': {
+        type: 'boolean',
+        default: true,
+        description: 'Install cert-manager for TLS certificates'
+      },
+      'global.ingress.class': {
+        type: 'string',
+        default: 'gitlab-nginx',
+        description: 'Ingress class for GitLab services'
+      }
+    }
+  },
+  {
+    id: 'minio',
+    name: 'MinIO',
+    category: 'Object Storage',
+    description: 'High Performance Object Storage compatible with Amazon S3 APIs',
+    repository: 'https://charts.min.io/',
+    chart: 'minio/minio',
+    latestVersion: '5.1.0',
+    coreValues: {
+      'mode': {
+        type: 'string',
+        default: 'distributed',
+        options: ['standalone', 'distributed'],
+        description: 'MinIO deployment mode'
+      },
+      'replicas': {
+        type: 'number',
+        default: 4,
+        description: 'Number of MinIO pods (must be even for distributed mode)'
+      },
+      'rootUser': {
+        type: 'string',
+        default: 'admin',
+        description: 'MinIO root user'
+      },
+      'rootPassword': {
+        type: 'string',
+        default: 'minio123',
+        description: 'MinIO root password (min 8 chars)'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage'
+      },
+      'persistence.size': {
+        type: 'string',
+        default: '500Gi',
+        description: 'Size of persistent volume per replica'
+      },
+      'persistence.storageClass': {
+        type: 'string',
+        default: '',
+        description: 'Storage class for persistent volumes'
+      },
+      'resources.requests.memory': {
+        type: 'string',
+        default: '1Gi',
+        description: 'Memory request per pod'
+      },
+      'resources.requests.cpu': {
+        type: 'string',
+        default: '250m',
+        description: 'CPU request per pod'
+      },
+      'service.type': {
+        type: 'string',
+        default: 'ClusterIP',
+        options: ['ClusterIP', 'NodePort', 'LoadBalancer'],
+        description: 'Kubernetes service type'
+      },
+      'service.port': {
+        type: 'number',
+        default: 9000,
+        description: 'MinIO API port'
+      },
+      'consoleService.port': {
+        type: 'number',
+        default: 9001,
+        description: 'MinIO Console port'
+      },
+      'ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for MinIO API'
+      },
+      'consoleIngress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for MinIO Console'
+      },
+      'buckets': {
+        type: 'array',
+        default: [],
+        description: 'Buckets to create on startup'
+      },
+      'users': {
+        type: 'array',
+        default: [],
+        description: 'Additional users to create'
+      },
+      'policies': {
+        type: 'array',
+        default: [],
+        description: 'IAM policies to create'
+      },
+      'metrics.serviceMonitor.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable Prometheus ServiceMonitor'
+      },
+      'podSecurityContext.runAsUser': {
+        type: 'number',
+        default: 1000,
+        description: 'User ID for MinIO containers'
+      },
+      'podSecurityContext.runAsGroup': {
+        type: 'number',
+        default: 1000,
+        description: 'Group ID for MinIO containers'
+      }
+    }
+  },
+  {
+    id: 'vault',
+    name: 'HashiCorp Vault',
+    category: 'Secret Management',
+    description: 'A tool for securely accessing secrets and protecting sensitive data',
+    repository: 'https://helm.releases.hashicorp.com',
+    chart: 'hashicorp/vault',
+    latestVersion: '0.27.0',
+    coreValues: {
+      'server.ha.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable high availability mode'
+      },
+      'server.ha.replicas': {
+        type: 'number',
+        default: 3,
+        description: 'Number of Vault server replicas in HA mode'
+      },
+      'server.resources.requests.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Memory request for Vault server'
+      },
+      'server.resources.requests.cpu': {
+        type: 'string',
+        default: '250m',
+        description: 'CPU request for Vault server'
+      },
+      'server.resources.limits.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Memory limit for Vault server'
+      },
+      'server.resources.limits.cpu': {
+        type: 'string',
+        default: '250m',
+        description: 'CPU limit for Vault server'
+      },
+      'server.dataStorage.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage for Vault data'
+      },
+      'server.dataStorage.size': {
+        type: 'string',
+        default: '10Gi',
+        description: 'Size of persistent volume for Vault data'
+      },
+      'server.auditStorage.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable persistent storage for audit logs'
+      },
+      'server.auditStorage.size': {
+        type: 'string',
+        default: '10Gi',
+        description: 'Size of persistent volume for audit logs'
+      },
+      'server.standalone.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable standalone mode (dev/testing)'
+      },
+      'server.dev.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable dev mode (insecure, for testing only)'
+      },
+      'injector.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Vault Agent Injector'
+      },
+      'injector.replicas': {
+        type: 'number',
+        default: 1,
+        description: 'Number of injector replicas'
+      },
+      'injector.resources.requests.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Memory request for injector'
+      },
+      'injector.resources.requests.cpu': {
+        type: 'string',
+        default: '250m',
+        description: 'CPU request for injector'
+      },
+      'ui.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Vault UI'
+      },
+      'ui.serviceType': {
+        type: 'string',
+        default: 'ClusterIP',
+        options: ['ClusterIP', 'NodePort', 'LoadBalancer'],
+        description: 'Service type for Vault UI'
+      },
+      'csi.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable Vault CSI Provider'
+      }
+    }
   }
 ];
 
@@ -680,5 +1217,10 @@ export const categories = [
   'Cache',
   'Data Processing',
   'Analytics',
-  'Real-time Analytics'
+  'Real-time Analytics',
+  'Artifact Repository',
+  'Container Registry',
+  'DevOps Platform',
+  'Object Storage',
+  'Secret Management'
 ];
