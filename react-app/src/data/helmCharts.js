@@ -447,9 +447,9 @@ export const helmCharts = [
     name: 'Apache Pinot',
     category: 'Real-time Analytics',
     description: 'A realtime distributed OLAP datastore for analytics at scale',
-    repository: 'https://raw.githubusercontent.com/apache/pinot/master/helm',
-    chart: 'pinot/pinot',
-    latestVersion: '0.3.4',
+    repository: 'https://github.com/apache/pinot/tree/master/helm/pinot',
+    chart: 'Manual Installation Required',
+    latestVersion: '0.3.5-SNAPSHOT',
     coreValues: {
       'cluster.name': {
         type: 'string',
