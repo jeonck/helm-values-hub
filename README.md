@@ -210,4 +210,3 @@ MIT License - 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 ## 📞 문의
 
 - **GitHub Issues**: [이슈 등록](https://github.com/jeonck/helm-values-hub/issues)
-- **GitHub Discussions**: [토론 참여](https://github.com/jeonck/helm-values-hub/discussions)
