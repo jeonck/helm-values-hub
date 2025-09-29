@@ -1203,6 +1203,555 @@ export const helmCharts = [
         description: 'Enable Vault CSI Provider'
       }
     }
+  },
+  {
+    id: 'jenkins',
+    name: 'Jenkins',
+    category: 'CI/CD',
+    description: 'Open source automation server for building, testing, and deploying code',
+    repository: 'https://charts.jenkins.io',
+    chart: 'jenkins/jenkins',
+    latestVersion: '5.1.9',
+    coreValues: {
+      'controller.adminPassword': {
+        type: 'string',
+        default: 'admin',
+        description: 'Admin user password'
+      },
+      'controller.resources.requests.cpu': {
+        type: 'string',
+        default: '50m',
+        description: 'CPU request for Jenkins controller'
+      },
+      'controller.resources.requests.memory': {
+        type: 'string',
+        default: '256Mi',
+        description: 'Memory request for Jenkins controller'
+      },
+      'controller.resources.limits.cpu': {
+        type: 'string',
+        default: '2000m',
+        description: 'CPU limit for Jenkins controller'
+      },
+      'controller.resources.limits.memory': {
+        type: 'string',
+        default: '4Gi',
+        description: 'Memory limit for Jenkins controller'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable persistent storage for Jenkins home'
+      },
+      'persistence.size': {
+        type: 'string',
+        default: '8Gi',
+        description: 'Size of persistent volume'
+      },
+      'agent.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Jenkins agents'
+      },
+      'agent.resources.requests.cpu': {
+        type: 'string',
+        default: '512m',
+        description: 'CPU request for Jenkins agents'
+      },
+      'agent.resources.requests.memory': {
+        type: 'string',
+        default: '512Mi',
+        description: 'Memory request for Jenkins agents'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create service account for Jenkins'
+      },
+      'rbac.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create RBAC resources'
+      },
+      'controller.ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for Jenkins UI'
+      },
+      'controller.installPlugins': {
+        type: 'array',
+        default: ['kubernetes:4029.v5712230ccb_f8', 'workflow-aggregator:596.v8c21c963d92d', 'git:5.0.0'],
+        description: 'Plugins to install on startup'
+      }
+    }
+  },
+  {
+    id: 'argocd',
+    name: 'Argo CD',
+    category: 'GitOps',
+    description: 'Declarative GitOps continuous delivery tool for Kubernetes',
+    repository: 'https://argoproj.github.io/argo-helm',
+    chart: 'argo/argo-cd',
+    latestVersion: '5.51.6',
+    coreValues: {
+      'server.replicas': {
+        type: 'number',
+        default: 1,
+        description: 'Number of Argo CD server replicas'
+      },
+      'server.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'CPU request for Argo CD server'
+      },
+      'server.resources.requests.memory': {
+        type: 'string',
+        default: '128Mi',
+        description: 'Memory request for Argo CD server'
+      },
+      'server.ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for Argo CD server'
+      },
+      'server.config': {
+        type: 'object',
+        default: {
+          'url': 'https://argocd.example.com'
+        },
+        description: 'Argo CD server configuration'
+      },
+      'repoServer.replicas': {
+        type: 'number',
+        default: 1,
+        description: 'Number of repo server replicas'
+      },
+      'repoServer.resources.requests.cpu': {
+        type: 'string',
+        default: '10m',
+        description: 'CPU request for repo server'
+      },
+      'repoServer.resources.requests.memory': {
+        type: 'string',
+        default: '64Mi',
+        description: 'Memory request for repo server'
+      },
+      'applicationSet.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable ApplicationSet controller'
+      },
+      'dex.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Dex for OIDC authentication'
+      },
+      'redis.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Redis for caching'
+      },
+      'notifications.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable Argo CD notifications controller'
+      },
+      'server.rbacConfig': {
+        type: 'object',
+        default: {},
+        description: 'RBAC configuration for Argo CD'
+      }
+    }
+  },
+  {
+    id: 'tekton',
+    name: 'Tekton Pipelines',
+    category: 'CI/CD',
+    description: 'Cloud-native solution for building CI/CD systems on Kubernetes',
+    repository: 'https://storage.googleapis.com/tekton-releases/pipeline/latest',
+    chart: 'tekton/tekton-pipelines',
+    latestVersion: '0.53.0',
+    coreValues: {
+      'controller.replicas': {
+        type: 'number',
+        default: 1,
+        description: 'Number of controller replicas'
+      },
+      'controller.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'CPU request for controller'
+      },
+      'controller.resources.requests.memory': {
+        type: 'string',
+        default: '100Mi',
+        description: 'Memory request for controller'
+      },
+      'webhook.replicas': {
+        type: 'number',
+        default: 1,
+        description: 'Number of webhook replicas'
+      },
+      'webhook.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'CPU request for webhook'
+      },
+      'webhook.resources.requests.memory': {
+        type: 'string',
+        default: '100Mi',
+        description: 'Memory request for webhook'
+      },
+      'config.defaults': {
+        type: 'object',
+        default: {
+          'default-timeout-minutes': '60',
+          'default-service-account': 'default'
+        },
+        description: 'Default configuration for Tekton pipelines'
+      },
+      'config.feature-flags': {
+        type: 'object',
+        default: {
+          'disable-affinity-assistant': 'false',
+          'running-in-environment-with-injected-sidecars': 'true'
+        },
+        description: 'Feature flags for Tekton'
+      },
+      'rbac.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create RBAC resources'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create service account'
+      }
+    }
+  },
+  {
+    id: 'sonarqube',
+    name: 'SonarQube',
+    category: 'Code Quality',
+    description: 'Platform for continuous inspection of code quality and security vulnerabilities',
+    repository: 'https://SonarSource.github.io/helm-chart-sonarqube',
+    chart: 'sonarqube/sonarqube',
+    latestVersion: '10.4.1',
+    coreValues: {
+      'replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of SonarQube replicas'
+      },
+      'sonarqubeFolder': {
+        type: 'string',
+        default: '/opt/sonarqube',
+        description: 'SonarQube installation directory'
+      },
+      'resources.requests.cpu': {
+        type: 'string',
+        default: '400m',
+        description: 'CPU request for SonarQube'
+      },
+      'resources.requests.memory': {
+        type: 'string',
+        default: '2Gi',
+        description: 'Memory request for SonarQube'
+      },
+      'resources.limits.cpu': {
+        type: 'string',
+        default: '800m',
+        description: 'CPU limit for SonarQube'
+      },
+      'resources.limits.memory': {
+        type: 'string',
+        default: '4Gi',
+        description: 'Memory limit for SonarQube'
+      },
+      'persistence.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable persistent storage'
+      },
+      'persistence.size': {
+        type: 'string',
+        default: '5Gi',
+        description: 'Size of persistent volume'
+      },
+      'postgresql.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable PostgreSQL subchart'
+      },
+      'postgresql.auth.postgresPassword': {
+        type: 'string',
+        default: 'sonarPass',
+        description: 'PostgreSQL admin password'
+      },
+      'postgresql.auth.database': {
+        type: 'string',
+        default: 'sonarDB',
+        description: 'PostgreSQL database name'
+      },
+      'service.type': {
+        type: 'string',
+        default: 'ClusterIP',
+        options: ['ClusterIP', 'NodePort', 'LoadBalancer'],
+        description: 'Kubernetes service type'
+      },
+      'ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress controller'
+      },
+      'plugins.install': {
+        type: 'array',
+        default: [],
+        description: 'SonarQube plugins to install'
+      }
+    }
+  },
+  {
+    id: 'jaeger',
+    name: 'Jaeger',
+    category: 'Observability',
+    description: 'End-to-end distributed tracing system for monitoring microservices',
+    repository: 'https://jaegertracing.github.io/helm-charts',
+    chart: 'jaegertracing/jaeger',
+    latestVersion: '2.2.0',
+    coreValues: {
+      'provisionDataStore.cassandra': {
+        type: 'boolean',
+        default: true,
+        description: 'Provision Cassandra for storage'
+      },
+      'provisionDataStore.elasticsearch': {
+        type: 'boolean',
+        default: false,
+        description: 'Provision Elasticsearch for storage'
+      },
+      'storage.type': {
+        type: 'string',
+        default: 'cassandra',
+        options: ['cassandra', 'elasticsearch', 'memory'],
+        description: 'Storage backend type'
+      },
+      'agent.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Jaeger agent'
+      },
+      'collector.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Jaeger collector'
+      },
+      'collector.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of collector replicas'
+      },
+      'collector.resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'CPU request for collector'
+      },
+      'collector.resources.requests.memory': {
+        type: 'string',
+        default: '128Mi',
+        description: 'Memory request for collector'
+      },
+      'query.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Jaeger query service'
+      },
+      'query.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of query replicas'
+      },
+      'query.ingress.enabled': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable ingress for Jaeger UI'
+      },
+      'cassandra.config.cluster_size': {
+        type: 'number',
+        default: 3,
+        description: 'Cassandra cluster size'
+      },
+      'cassandra.config.seed_size': {
+        type: 'number',
+        default: 1,
+        description: 'Cassandra seed size'
+      }
+    }
+  },
+  {
+    id: 'falco',
+    name: 'Falco',
+    category: 'Security',
+    description: 'Runtime security monitoring for detecting anomalous activities in applications',
+    repository: 'https://falcosecurity.github.io/charts',
+    chart: 'falcosecurity/falco',
+    latestVersion: '4.0.4',
+    coreValues: {
+      'driver.kind': {
+        type: 'string',
+        default: 'ebpf',
+        options: ['ebpf', 'kmod', 'modern_ebpf'],
+        description: 'Driver type for system call monitoring'
+      },
+      'driver.ebpf.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable eBPF driver'
+      },
+      'falco.rules_file': {
+        type: 'array',
+        default: ['/etc/falco/falco_rules.yaml', '/etc/falco/falco_rules.local.yaml', '/etc/falco/rules.d'],
+        description: 'Falco rules files'
+      },
+      'falco.json_output': {
+        type: 'boolean',
+        default: false,
+        description: 'Enable JSON output format'
+      },
+      'falco.log_stderr': {
+        type: 'boolean',
+        default: true,
+        description: 'Log to stderr'
+      },
+      'falco.log_syslog': {
+        type: 'boolean',
+        default: true,
+        description: 'Log to syslog'
+      },
+      'falco.priority': {
+        type: 'string',
+        default: 'debug',
+        options: ['emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug'],
+        description: 'Minimum priority of rules to load'
+      },
+      'resources.requests.cpu': {
+        type: 'string',
+        default: '100m',
+        description: 'CPU request'
+      },
+      'resources.requests.memory': {
+        type: 'string',
+        default: '512Mi',
+        description: 'Memory request'
+      },
+      'resources.limits.cpu': {
+        type: 'string',
+        default: '1000m',
+        description: 'CPU limit'
+      },
+      'resources.limits.memory': {
+        type: 'string',
+        default: '1024Mi',
+        description: 'Memory limit'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create service account'
+      },
+      'rbac.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create RBAC resources'
+      },
+      'falcoctl.artifact.install.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable artifact installation via falcoctl'
+      }
+    }
+  },
+  {
+    id: 'cert-manager',
+    name: 'cert-manager',
+    category: 'Security',
+    description: 'Automatically provision and manage TLS certificates in Kubernetes',
+    repository: 'https://charts.jetstack.io',
+    chart: 'jetstack/cert-manager',
+    latestVersion: '1.13.3',
+    coreValues: {
+      'installCRDs': {
+        type: 'boolean',
+        default: false,
+        description: 'Install cert-manager CRDs'
+      },
+      'replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of cert-manager replicas'
+      },
+      'resources.requests.cpu': {
+        type: 'string',
+        default: '10m',
+        description: 'CPU request for cert-manager'
+      },
+      'resources.requests.memory': {
+        type: 'string',
+        default: '32Mi',
+        description: 'Memory request for cert-manager'
+      },
+      'webhook.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of webhook replicas'
+      },
+      'webhook.resources.requests.cpu': {
+        type: 'string',
+        default: '10m',
+        description: 'CPU request for webhook'
+      },
+      'webhook.resources.requests.memory': {
+        type: 'string',
+        default: '32Mi',
+        description: 'Memory request for webhook'
+      },
+      'cainjector.replicaCount': {
+        type: 'number',
+        default: 1,
+        description: 'Number of CA injector replicas'
+      },
+      'cainjector.resources.requests.cpu': {
+        type: 'string',
+        default: '10m',
+        description: 'CPU request for CA injector'
+      },
+      'cainjector.resources.requests.memory': {
+        type: 'string',
+        default: '32Mi',
+        description: 'Memory request for CA injector'
+      },
+      'serviceAccount.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create service account for cert-manager'
+      },
+      'rbac.create': {
+        type: 'boolean',
+        default: true,
+        description: 'Create RBAC resources'
+      },
+      'prometheus.enabled': {
+        type: 'boolean',
+        default: true,
+        description: 'Enable Prometheus metrics'
+      },
+      'extraArgs': {
+        type: 'array',
+        default: [],
+        description: 'Additional arguments for cert-manager'
+      }
+    }
   }
 ];
 
@@ -1222,5 +1771,10 @@ export const categories = [
   'Container Registry',
   'DevOps Platform',
   'Object Storage',
-  'Secret Management'
+  'Secret Management',
+  'CI/CD',
+  'GitOps',
+  'Code Quality',
+  'Observability',
+  'Security'
 ];
